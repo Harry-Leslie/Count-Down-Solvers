@@ -5,6 +5,17 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+"""
+The Number Game (Countdown)
+
+The number game involve 5 numbers and a target. The aim of the game, is to get as 
+close to the target as you can using four functions (+, -, *, /) and 
+the 5 numbers (not necessarily all of them).
+
+You can not make the number negative or fractional at any point during the calculation
+
+This solver attempts to find the best solution possible.
+"""
 
 class Solver:
     def __init__(self, arr: List[int], target: int):
@@ -13,13 +24,28 @@ class Solver:
         self.operators = ['+', '-', '*', '/']
 
     def brute_solve(self, verbose: bool) -> tuple:
+
         """
         Find the closest solution to the target by going through all possible
-        combinations of solution using brute force. If multiprocessing_flag is True,
-        parallelize the evaluation process.
-        :param multiprocessing_flag: whether to use multiprocessing for evaluation.
-        :param verbose: whether to log detailed steps during execution.
-        :return: a tuple with the expression string closest to the target and the value.
+        combinations of solution
+
+        Explanation: Brute force solution.e This involves finding all
+        combinations of permutations
+
+        ie [1, 2, 3, 4, 5] are the numbers
+
+        then ([1, opp, 2, opp, 3, opp, 4, opp, 5]) but you can also have
+        combinations like [1, opp, 2, opp, 3] which could evaluate
+        to the solution as well.
+
+        Furthermore, you can have issues with bracketing because of BIDMAS.
+        This means [1, opp, 2, opp 3] evaluates differently depending on the
+        brackets positioning (ie [1, opp, (2, opp, 3)] vs [(1, opp, 2), opp, 3)] vs [(1, opp, 2, opp 3)]).
+
+        Finally, because you do not need to use all the numbers, you need to check all combinations with
+        bracketing - meaning addition computation is required.
+
+        :returns: a string with a solution closest to the target, the number closest to the target
         """
         combination_array: List[List[int]] = []
 
