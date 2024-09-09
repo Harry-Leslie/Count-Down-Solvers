@@ -40,7 +40,7 @@ class Solver:
         Finally, because you do not need to use all the numbers, you need to check all combinations with
         bracketing - meaning addition computation is required.
 
-        :return: a string with a solution closest to the target
+        :returns: a string with a solution closest to the target, the number closest to the target
         """
 
     def all_number_combinations(self):
@@ -59,3 +59,23 @@ class Solver:
             )
 
         return all_combinations_of_numbers
+
+    def all_possible_operator_lists(self, arr: List[int]) -> List[List[object]]:
+        """
+        Produces all possible operator combinations with the numbers provided. :param arr: the array that you would
+        like to add operators to in [number, opp, number ..., number] fashion :return: an array containing the list
+        of numbers in [number, opp, number, ..., number] for all operators in self.operators
+        """
+        return self.all_possible_operator_lists_helper(arr, 0, [], [])
+
+    def all_possible_operator_lists_helper(self, arr: List[int], current_index: int, current: List[object],
+                                           res: List[List[object]]):
+        if current_index >= len(arr) - 1:
+            current.append(arr[current_index])
+            res.append(current.copy())
+            return res
+        for operator in self.operators:
+            temp = current.copy()
+            temp.extend([arr[current_index], operator])
+            self.all_possible_operator_lists_helper(arr, current_index + 1, temp, res)
+        return res
