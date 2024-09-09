@@ -79,3 +79,40 @@ class Solver:
             temp.extend([arr[current_index], operator])
             self.all_possible_operator_lists_helper(arr, current_index + 1, temp, res)
         return res
+
+    def selective_bracketing(self, expr: List[object]) -> List[List[object]]:
+        """
+        A more efficient way of adding brackets to the expression.
+        Focus on applying brackets where necessary (for *, /) and avoid
+        unnecessary combinations that don't impact the result significantly.
+
+        :param expr: A list of numbers and operators.
+        :return: A list of possible expressions with selective bracketing.
+        """
+        result = [expr]  # Start with no brackets
+        operators = [op for i, op in enumerate(expr) if isinstance(expr[i], str)]
+
+        # Only consider adding brackets for expressions with mixed precedence
+        if '*' in operators or '/' in operators:
+            result.extend(self.add_bracketing(expr))
+
+        return result
+
+    def add_bracketing(self, expr: List[object]) -> List[List[object]]:
+        """
+        Finds all possible ways of bracketing an array.
+        """
+        if len(expr) == 1:
+            return [expr]
+
+        result = []
+
+        for i in range(1, len(expr) - 1, 2):
+            left_part = self.add_bracketing(expr[:i])
+            right_part = self.add_bracketing(expr[i + 1:])
+
+            for left in left_part:
+                for right in right_part:
+                    result.append(['('] + left + [expr[i]] + right + [')'])
+
+        return result
